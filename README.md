@@ -49,8 +49,7 @@ This Task Management App is a simple yet powerful tool for organizing and tracki
 ## Screenshot
 
 ![alt text](./assets/images/Screenshot%201.png)
-
-
+---
 ![alt text](./assets/images/Screenshot%202.png)
 
 **Repo:**
