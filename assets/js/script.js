@@ -97,6 +97,27 @@ function handleAddTask(event) {
     const taskDueDate = $('#due-date').val();
     const taskDescription = $('#description').val();
 
+    // Validation
+    if (!taskTitle) {
+        alert("Task title is required.");
+        $('#title').focus();
+        return;
+    }
+
+    if (!taskDueDate) {
+        alert("Due date is required.");
+        $('#due-date').focus();
+        return;
+    }
+
+    // Validate due date format using Day.js
+    const isValidDate = dayjs(taskDueDate, 'DD/MM/YYYY', true).isValid();
+    if (!isValidDate) {
+        alert("Please enter a valid due date in the format DD/MM/YYYY.");
+        $('#due-date').focus();
+        return;
+    }
+
     const newTask = {
         id: generateTaskId(),
         title: taskTitle,
@@ -120,11 +141,8 @@ function handleAddTask(event) {
 function handleDeleteTask(event) {
     const taskId = $(this).attr('data-taskid');
     
-    taskList.forEach((task) => {
-        if (task.id === parseInt(taskId)) {
-            taskList.splice(taskList.indexOf(task), 1);
-        }
-    });
+    // Use filter to create a new array without the task to delete
+    taskList = taskList.filter(task => task.id !== parseInt(taskId));
 
     localStorage.setItem('tasks',JSON.stringify(taskList))
 
@@ -140,6 +158,7 @@ function handleDrop(event, ui) {
 
         if (task.id === parseInt(taskId)) {
             task.status = newStatus;
+            break;
         }
     }
 
@@ -159,7 +178,10 @@ $(document).ready(function () {
         changeYear: true,
     });
 
-    $('#task-form').on('submit', handleAddTask)
+    $('#task-form').on('submit', function(event) {
+        console.log("Form submitted");
+        handleAddTask(event);
+    });
 
     $('.lane').droppable({
         accept: '.draggable',
